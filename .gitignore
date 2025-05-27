@@ -3,6 +3,13 @@
 /node_modules
 /build
 
+# removing .env files from git
+# This file is used to ignore files and directories that should not be tracked by git.
+# It is common to ignore environment-specific configuration files, build artifacts, and other temporary files.
+# Environment variables
+.env.*
+.env
+
 # Logs
 logs
 *.log
