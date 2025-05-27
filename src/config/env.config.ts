@@ -6,4 +6,6 @@ export interface EnvConfig {
   DB_NAME: string;
   IS_PRODUCTION: boolean;
   DB_SYNC: boolean;
+  JWT_SECRET_KEY: string;
+  SALT_OR_ROUNDS: number;
 }
