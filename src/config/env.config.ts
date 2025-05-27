@@ -5,4 +5,5 @@ export interface EnvConfig {
   DB_PASSWORD: string;
   DB_NAME: string;
   IS_PRODUCTION: boolean;
+  DB_SYNC: boolean;
 }
