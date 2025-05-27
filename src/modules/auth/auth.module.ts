@@ -11,10 +11,12 @@ import { User } from '@modules/users/entities/user.entity';
 import { Admin } from '@modules/users/entities/admin.entity';
 import { Client } from '@modules/users/entities/client.entity';
 import { ClientAuthController } from './controllers/client-auth.controller';
+import { ErrorLogModule } from '@modules/error-log/error-log.module';
 
 @Module({
   imports: [
     UsersModule,
+    ErrorLogModule,
     JwtModule.registerAsync({
       useFactory: (config: ConfigService<EnvConfig>) => ({
         secret: config.get<string>('JWT_SECRET_KEY'),
