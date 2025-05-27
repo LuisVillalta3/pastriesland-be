@@ -7,9 +7,10 @@ import { AdminsService } from './services/admins.service';
 import { AdminsController } from './controllers/admins.controller';
 import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
+import { ErrorLogModule } from '@modules/error-log/error-log.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Admin, Client])],
+  imports: [TypeOrmModule.forFeature([User, Admin, Client]), ErrorLogModule],
   exports: [TypeOrmModule],
   providers: [AdminsService, UsersService],
   controllers: [AdminsController, UsersController],

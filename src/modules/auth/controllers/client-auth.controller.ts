@@ -8,6 +8,7 @@ import {
 import { AuthService } from '@modules/auth/auth.service';
 import { LoginResponseSchema } from '@/components/schemas/login-response.schema';
 import { AuthDto } from '@modules/auth/dto/auth.dto';
+import { ErrorHandler } from '@common/decorators/error-handler.decorator';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -23,6 +24,7 @@ export class ClientAuthController {
       allOf: [{ $ref: getSchemaPath(LoginResponseSchema) }],
     },
   })
+  @ErrorHandler()
   login(@Body() { email, password }: AuthDto) {
     return this.authService.login({ email, password, type: 'client' });
   }

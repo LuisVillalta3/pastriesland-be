@@ -12,6 +12,7 @@ import {
 } from '@/components/schemas/create-user.schema';
 import { HttpResponse } from '@common/http-responses/http.response';
 import { ClientDto } from '@modules/users/dto/client.dto';
+import { ErrorHandler } from '@common/decorators/error-handler.decorator';
 
 @Controller('users')
 @ApiTags('Users')
@@ -33,6 +34,7 @@ export class UsersController {
       },
     },
   })
+  @ErrorHandler()
   async create(
     @Body() userDto: ClientDto,
   ): Promise<HttpResponse<CreateAdminSchema>> {
