@@ -5,8 +5,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
-export class ErrorLog {
+@Entity({ name: 'error_log' })
+export class ErrorLogEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 

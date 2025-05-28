@@ -1,8 +1,8 @@
 import { ChildEntity, Column } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @ChildEntity()
-export abstract class Admin extends User {
+export abstract class AdminEntity extends UserEntity {
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
 }

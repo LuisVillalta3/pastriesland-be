@@ -2,9 +2,9 @@ import { Column, Entity, TableInheritance } from 'typeorm';
 import { BaseEntity } from '@common/entities/base.entity';
 import * as bcrypt from 'bcrypt';
 
-@Entity()
+@Entity({ name: 'user' })
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
-export abstract class User extends BaseEntity {
+export abstract class UserEntity extends BaseEntity {
   @Column()
   name: string;
 

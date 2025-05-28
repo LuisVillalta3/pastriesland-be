@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { Admin } from '@modules/users/entities/admin.entity';
-import { Client } from '@modules/users/entities/client.entity';
+import { AdminEntity } from '@modules/users/entities/admin.entity';
+import { ClientEntity } from '@modules/users/entities/client.entity';
 import { ILoginResponse } from '@modules/auth/interfaces/iLogin.response';
 import { iPayload } from '@modules/auth/interfaces/payload.type';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,10 +17,10 @@ type LoginDto = {
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @InjectRepository(Admin)
-    private readonly adminRepository: Repository<Admin>,
-    @InjectRepository(Client)
-    private readonly clientRepository: Repository<Client>,
+    @InjectRepository(AdminEntity)
+    private readonly adminRepository: Repository<AdminEntity>,
+    @InjectRepository(ClientEntity)
+    private readonly clientRepository: Repository<ClientEntity>,
   ) {}
 
   async login({ email, password, type }: LoginDto): Promise<ILoginResponse> {
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   private async validateUser(
-    user: Admin | Client | null,
+    user: AdminEntity | ClientEntity | null,
     password: string,
   ): Promise<boolean> {
     const isValid = (user && (await user.validatePassword(password))) || false;
@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   private createResponse(
-    user: Admin | Client,
+    user: AdminEntity | ClientEntity,
     type: 'admin' | 'client',
   ): ILoginResponse {
     const payload: iPayload = { sub: user.id, email: user.email, type };

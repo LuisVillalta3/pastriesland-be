@@ -7,9 +7,9 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from '@modules/auth/strategies/jwt.strategy';
 import { AdminAuthController } from './controllers/admin-auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@modules/users/entities/user.entity';
-import { Admin } from '@modules/users/entities/admin.entity';
-import { Client } from '@modules/users/entities/client.entity';
+import { UserEntity } from '@modules/users/entities/user.entity';
+import { AdminEntity } from '@modules/users/entities/admin.entity';
+import { ClientEntity } from '@modules/users/entities/client.entity';
 import { ClientAuthController } from './controllers/client-auth.controller';
 import { ErrorLogModule } from '@modules/error-log/error-log.module';
 
