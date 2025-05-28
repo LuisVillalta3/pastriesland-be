@@ -6,13 +6,13 @@ import { EnvConfig } from '@config/env.config';
 import { CreateAdminResponse } from '@modules/users/responses/create-admin.response';
 import { encryptPassword } from '@/utils/encrypt-password.util';
 import { ClientDto } from '@modules/users/dto/client.dto';
-import { Client } from '@modules/users/entities/client.entity';
+import { ClientEntity } from '@modules/users/entities/client.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(Client)
-    private readonly userRepository: Repository<Client>,
+    @InjectRepository(ClientEntity)
+    private readonly userRepository: Repository<ClientEntity>,
     private readonly configService: ConfigService<EnvConfig>,
   ) {}
 
@@ -37,7 +37,7 @@ export class UsersService {
     return await this.userRepository.save(client);
   }
 
-  async getAllClients(): Promise<Client[]> {
+  async getAllClients(): Promise<ClientEntity[]> {
     return await this.userRepository.find();
   }
 }

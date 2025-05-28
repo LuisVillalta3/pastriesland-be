@@ -1,5 +1,5 @@
 import { ChildEntity } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @ChildEntity()
-export abstract class Client extends User {}
+export abstract class ClientEntity extends UserEntity {}

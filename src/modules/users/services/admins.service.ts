@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Admin } from '@modules/users/entities/admin.entity';
+import { AdminEntity } from '@modules/users/entities/admin.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { EnvConfig } from '@config/env.config';
@@ -12,8 +12,8 @@ import { CreateAdminResponse } from '@modules/users/responses/create-admin.respo
 @Injectable()
 export class AdminsService {
   constructor(
-    @InjectRepository(Admin)
-    private readonly userRepository: Repository<Admin>,
+    @InjectRepository(AdminEntity)
+    private readonly userRepository: Repository<AdminEntity>,
     private readonly configService: ConfigService<EnvConfig>,
   ) {}
 
@@ -43,7 +43,7 @@ export class AdminsService {
     };
   }
 
-  async getAllAdmins(): Promise<Admin[]> {
+  async getAllAdmins(): Promise<AdminEntity[]> {
     return await this.userRepository.find();
   }
 }
