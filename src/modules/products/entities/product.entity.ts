@@ -2,9 +2,13 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { BaseEntity } from '@common/entities/base.entity';
 import { CategoryEntity } from '@modules/categories/category.entity';
 import { ProductVariantEntity } from '@modules/products/entities/product-variant.entity';
+import { ImageableEntity } from '@common/entities/imageable.entity';
+import { ImageEntity } from '@modules/images/entities/image.entity';
 
 @Entity({ name: 'products' })
-export class ProductEntity extends BaseEntity {
+export class ProductEntity extends BaseEntity implements ImageableEntity {
+  imageableType: string = 'products';
+
   @Column()
   name: string;
 
@@ -36,4 +40,6 @@ export class ProductEntity extends BaseEntity {
     cascade: true,
   })
   variants: ProductVariantEntity[];
+
+  images: ImageEntity[] = [];
 }

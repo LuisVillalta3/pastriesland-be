@@ -17,7 +17,7 @@ export async function generatePagination<T extends ObjectLiteral>(
   const prevPage = hasPrevPage ? currentPage - 1 : null;
 
   return {
-    data,
+    results: data,
     paginationProps: {
       total,
       page: currentPage,

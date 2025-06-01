@@ -6,6 +6,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ErrorLogModule } from './modules/error-log/error-log.module';
 import { ProductsModule } from './modules/products/products.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { ImagesModule } from './modules/images/images.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -16,6 +19,15 @@ import { CategoriesModule } from './modules/categories/categories.module';
     ErrorLogModule,
     ProductsModule,
     CategoriesModule,
+    ImagesModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'public'),
+      serveRoot: '/public',
+      exclude: ['/api/{*test}'],
+      serveStaticOptions: {
+        fallthrough: false,
+      },
+    }),
   ],
   controllers: [],
   providers: [],
