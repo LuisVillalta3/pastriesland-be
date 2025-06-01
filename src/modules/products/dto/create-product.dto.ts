@@ -38,7 +38,6 @@ export class CreateProductDto {
   maxPortions: number;
 
   @ApiProperty()
-  @IsUUID('4', { each: true })
   categoriesIDs: string[];
 
   @ApiProperty()

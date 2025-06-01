@@ -55,7 +55,7 @@ export class AdminsController {
 
   @Get()
   @ApiBearerAuth()
-  @UseGuards(AdminAuthGuard)
+  //@UseGuards(AdminAuthGuard)
   async getAllAdmins() {
     return await this.adminService.getAllAdmins();
   }
