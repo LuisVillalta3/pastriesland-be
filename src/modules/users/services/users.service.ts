@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -22,6 +22,10 @@ export class UsersService {
     email,
     password,
   }: ClientDto): Promise<CreateAdminResponse> {
+    if (await this.findUserByEmail(email)) {
+      throw new ConflictException('Este email ya está en uso');
+    }
+
     const encrypted_password = await encryptPassword(
       password,
       +this.configService.get<number>('SALT_OR_ROUNDS', 10),
@@ -35,6 +39,12 @@ export class UsersService {
     });
 
     return await this.userRepository.save(client);
+  }
+
+  async findUserByEmail(email: string): Promise<ClientEntity | null> {
+    return await this.userRepository.findOne({
+      where: { email },
+    });
   }
 
   async getAllClients(): Promise<ClientEntity[]> {
