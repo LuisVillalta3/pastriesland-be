@@ -42,4 +42,7 @@ export class ProductEntity extends BaseEntity implements ImageableEntity {
   variants: ProductVariantEntity[];
 
   images: ImageEntity[] = [];
+
+  @Column({ default: false })
+  isOutstanding: boolean;
 }

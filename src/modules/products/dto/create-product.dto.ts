@@ -46,6 +46,10 @@ export class CreateProductDto {
   @ApiProperty({ default: true })
   @IsBoolean()
   active: boolean;
+
+  @ApiProperty({ default: true })
+  @IsBoolean()
+  isOutstanding: boolean;
 }
 
 export class VariantDto {

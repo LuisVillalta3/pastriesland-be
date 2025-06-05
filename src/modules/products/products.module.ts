@@ -6,6 +6,7 @@ import { ProductsService } from './products.service';
 import { AdminProductsController } from './controllers/admin-products.controller';
 import { ErrorLogModule } from '@modules/error-log/error-log.module';
 import { ImageEntity } from '@modules/images/entities/image.entity';
+import { ProductsController } from './controllers/products.controller';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { ImageEntity } from '@modules/images/entities/image.entity';
   ],
   exports: [TypeOrmModule],
   providers: [ProductsService],
-  controllers: [AdminProductsController],
+  controllers: [AdminProductsController, ProductsController],
 })
 export class ProductsModule {}
