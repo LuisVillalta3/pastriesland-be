@@ -51,6 +51,9 @@ export class ProductsService {
         units: productDto.units,
         isOutstanding: productDto.isOutstanding,
         categories: categoriesEntities,
+        addons: productDto.addons,
+        flavors: productDto.flavors,
+        design: productDto.design,
       });
 
       const savedProduct = await queryRunner.manager.save(

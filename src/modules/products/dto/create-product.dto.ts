@@ -50,6 +50,18 @@ export class CreateProductDto {
   @ApiProperty({ default: true })
   @IsBoolean()
   isOutstanding: boolean;
+
+  @ApiProperty()
+  @IsString()
+  addons: string;
+
+  @ApiProperty()
+  @IsString()
+  flavors: string;
+
+  @ApiProperty()
+  @IsString()
+  design: string;
 }
 
 export class VariantDto {
