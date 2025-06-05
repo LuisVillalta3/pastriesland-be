@@ -1,5 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource, In, QueryRunner, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsWhere,
+  In,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 import { ProductEntity } from '@modules/products/entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -11,6 +17,7 @@ import { ProductVariantEntity } from '@modules/products/entities/product-variant
 import { PaginationProps } from '@common/interfaces/pagination-props.interface';
 import { generatePagination } from '@/utils/generate-pagination.util';
 import { ImageEntity } from '@modules/images/entities/image.entity';
+import { GetProductsDto } from '@modules/products/dto/get-products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -34,8 +41,6 @@ export class ProductsService {
         queryRunner,
       );
 
-      console.log(productDto);
-
       const product = queryRunner.manager.create(ProductEntity, {
         name: productDto.name,
         active: productDto.active,
@@ -44,9 +49,9 @@ export class ProductsService {
         maxPortions: productDto.maxPortions,
         minPortions: productDto.minPortions,
         units: productDto.units,
+        isOutstanding: productDto.isOutstanding,
         categories: categoriesEntities,
       });
-      console.log(product);
 
       const savedProduct = await queryRunner.manager.save(
         ProductEntity,
@@ -79,14 +84,7 @@ export class ProductsService {
 
     if (!product) throw new NotFoundException('Product not found');
 
-    product.images = await this.imageRepo.find({
-      where: {
-        imageableId: id,
-        imageableType: 'products',
-      },
-    });
-
-    return product;
+    return this.addProductImages(product);
   }
 
   async update(id: string, productDto: CreateProductDto) {
@@ -194,5 +192,70 @@ export class ProductsService {
     );
 
     await queryRunner.manager.save(ProductVariantEntity, variantsEntities);
+  }
+
+  async getActiveProducts(getProductsDto: GetProductsDto) {
+    const {
+      onlyOutstandings = false,
+      categories = "",
+      paginated = false,
+      page = 1,
+      limit = 10,
+    } = getProductsDto;
+
+    const query = this.productRepo
+      .createQueryBuilder('product')
+      .andWhere('product.active = :active', { active: true });
+
+    if (onlyOutstandings.toString() == 'true') {
+      query.andWhere('product.isOutstanding = :isOutstanding', {
+        isOutstanding: true,
+      });
+    }
+
+    const categoriesFilter = categories.split(',');
+
+    if (categoriesFilter.length && categoriesFilter[0]) {
+      query
+        .leftJoin('product.categories', 'category')
+        .andWhere('category.id IN (:...categoriesFilter)', {
+          categoriesFilter,
+        });
+    }
+
+    if (paginated.toString() == 'false') {
+      const products = await query.getMany();
+
+      const data = products.map(async (p) => this.addProductImages(p));
+
+      return Promise.all(data);
+    }
+
+    const { results, paginationProps } =
+      await generatePagination<ProductEntity>(
+        query,
+        Number(page),
+        Number(limit),
+      );
+
+    const data = results.map(async (p) => this.addProductImages(p));
+
+    const products = await Promise.all(data);
+
+    return {
+      results: products,
+      paginationProps,
+    };
+  }
+
+  async addProductImages(product: ProductEntity) {
+    product.images = await this.imageRepo.find({
+      where: {
+        imageableId: product.id,
+        imageableType: 'products',
+      },
+    });
+
+    return product;
   }
 }
