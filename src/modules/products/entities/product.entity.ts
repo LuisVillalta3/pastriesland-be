@@ -45,4 +45,13 @@ export class ProductEntity extends BaseEntity implements ImageableEntity {
 
   @Column({ default: false })
   isOutstanding: boolean;
+
+  @Column({ default: '', nullable: true })
+  addons: string;
+
+  @Column({ default: '', nullable: true })
+  flavors: string;
+
+  @Column({ default: '', nullable: true })
+  design: string;
 }
