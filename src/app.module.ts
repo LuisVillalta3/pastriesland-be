@@ -9,6 +9,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { ImagesModule } from './modules/images/images.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ContactsModule } from './modules/contacts/contacts.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { join } from 'path';
         fallthrough: false,
       },
     }),
+    ContactsModule,
   ],
   controllers: [],
   providers: [],
