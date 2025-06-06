@@ -7,12 +7,16 @@ import { CreateAdminResponse } from '@modules/users/responses/create-admin.respo
 import { encryptPassword } from '@/utils/encrypt-password.util';
 import { ClientDto } from '@modules/users/dto/client.dto';
 import { ClientEntity } from '@modules/users/entities/client.entity';
+import { CreateAddressDto } from '@modules/users/dto/create-address.dto';
+import { AddressEntity } from '@modules/users/entities/address.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(ClientEntity)
     private readonly userRepository: Repository<ClientEntity>,
+    @InjectRepository(AddressEntity)
+    private readonly addressRepo: Repository<AddressEntity>,
     private readonly configService: ConfigService<EnvConfig>,
   ) {}
 
@@ -49,5 +53,27 @@ export class UsersService {
 
   async getAllClients(): Promise<ClientEntity[]> {
     return await this.userRepository.find();
+  }
+
+  async createAddress(addressDto: CreateAddressDto) {
+    const user = await this.userRepository.findOne({
+      where: { id: addressDto.userId },
+    });
+
+    if (!user) {
+      throw new ConflictException('Usuario no encontrado');
+    }
+
+    return await this.addressRepo.save({
+      user,
+      address: addressDto.address,
+      addressName: addressDto.addressName,
+    });
+  }
+
+  async getAddressesByUserId(userId: string): Promise<AddressEntity[]> {
+    return await this.addressRepo.find({
+      where: { user: { id: userId } },
+    });
   }
 }
