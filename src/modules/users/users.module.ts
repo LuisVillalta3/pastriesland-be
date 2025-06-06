@@ -8,10 +8,11 @@ import { AdminsController } from './controllers/admins.controller';
 import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
 import { ErrorLogModule } from '@modules/error-log/error-log.module';
+import { AddressEntity } from '@modules/users/entities/address.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, AdminEntity, ClientEntity]),
+    TypeOrmModule.forFeature([UserEntity, AdminEntity, ClientEntity, AddressEntity]),
     ErrorLogModule,
   ],
   exports: [TypeOrmModule],

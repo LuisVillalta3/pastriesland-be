@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiExtraModels,
@@ -13,6 +13,7 @@ import {
 import { HttpResponse } from '@common/http-responses/http.response';
 import { ClientDto } from '@modules/users/dto/client.dto';
 import { ErrorHandler } from '@common/decorators/error-handler.decorator';
+import { CreateAddressDto } from '@modules/users/dto/create-address.dto';
 
 @Controller('users')
 @ApiTags('Users')
@@ -44,6 +45,30 @@ export class UsersController {
       statusCode: HttpStatus.OK,
       message: 'User created successfully',
       data: user,
+    };
+  }
+
+  @Post('addresses/create')
+  @ErrorHandler()
+  async createAddress(@Body() addressDto: CreateAddressDto) {
+    const data = await this.usersService.createAddress(addressDto);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Address created successfully',
+      data,
+    };
+  }
+
+  @Get('my-addresses/:userId')
+  @ErrorHandler()
+  async getMyAddresses(@Body('userId') userId: string) {
+    const addresses = await this.usersService.getAddressesByUserId(userId);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Addresses retrieved successfully',
+      data: addresses,
     };
   }
 }
